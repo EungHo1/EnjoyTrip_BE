@@ -1,0 +1,162 @@
+프로젝트 구조 및 TODO
+
+/WEB-INF/views/
+    ├── common/         # (유지) 공통 헤더, 푸터, 내비게이션
+    │   ├── header.jsp
+    │   ├── nav.jsp
+    │   └── footer.jsp
+    │
+    ├── user/           # F07 (회원관리), F08 (로그인)
+    │   ├── login.jsp          # 로그인 폼
+    │   ├── register.jsp       # 회원가입 폼
+    │   └── mypage.jsp         # 내 정보 조회/수정/탈퇴 페이지
+    │
+    ├── attraction/     # F01, F02, F03 (관광지 정보)
+    │   └── list.jsp           # 지역/컨텐츠별 관광지 조회 결과 페이지
+    │
+    ├── plan/           # F04 (여행 계획) - 신규
+    │   ├── list.jsp           # 내 여행 계획 목록
+    │   ├── detail.jsp         # 특정 여행 계획 상세 보기
+    │   └── form.jsp           # 여행 계획 생성/수정 페이지
+    │
+    ├── hotplace/       # F05 (핫플레이스) - 신규
+    │   ├── list.jsp           # 핫플레이스 목록
+    │   ├── detail.jsp         # 핫플레이스 상세 보기
+    │   └── form.jsp           # 핫플레이스 등록/수정 페이지
+    │
+    ├── notice/         # F09 (공지사항) - 신규
+    │   ├── list.jsp           # 공지사항 목록
+    │   └── detail.jsp         # 공지사항 상세 보기
+    │
+    └── board/          # F10 (공유게시판)
+        ├── list.jsp           # 글 목록
+        ├── detail.jsp         # 글 상세 보기
+        └── form.jsp           # 글쓰기 및 수정 폼
+
+
+
+1. 회원 관리 기능 (F07, F08)
+
+[ ] UserDaoImpl.java 구현 (JDBC로 CRUD 쿼리 작성)
+
+[ ] UserServiceImpl.java 구현 (회원가입, 로그인, 정보수정 등 비즈니스 로직)
+
+[ ] UserServlet.java 구현 (action 파라미터에 따라 login, logout, register, mypage 등 요청 처리)
+
+[ ] 로그인/로그아웃 시 HttpSession 처리 로직 구현
+
+2. 공유 게시판 기능 (F10)
+
+[ ] BoardDaoImpl.java 구현 (JDBC로 CRUD 쿼리 작성)
+
+[ ] BoardServiceImpl.java 구현 (목록조회, 글쓰기, 글읽기 등 비즈니스 로직)
+
+[ ] BoardServlet.java 구현 (action 파라미터에 따라 list, detail, create, update, delete 등 요청 처리)
+
+[ ] 상세 보기 시 조회수(hit) 1 증가시키는 로직 구현
+
+3. 관광지 정보 기능 (F01, F02, F03)
+
+[ ] util 패키지에 공공데이터 API 호출을 전담할 ApiUtil.java 클래스 구현 (선택 사항)
+
+[ ] AttractionDaoImpl.java 구현 (DB에 저장된 관광지 정보 조회 쿼리)
+
+[ ] AttractionServiceImpl.java 구현 (검색 조건에 맞는 관광지 조회 로직)
+
+[ ] AttractionServlet.java 구현 (sidoCode, contentTypeId 등 파라미터를 받아 검색 결과 페이지로 포워딩)
+
+[ ] (심화) 공공데이터 API 호출 결과를 DB에 저장하는 로직 구현
+
+4. 핫플레이스 기능 (F05)
+
+[ ] Hotplace 관련 domain, dto, dao/service 인터페이스 및 schema.sql DDL 정의
+
+[ ] HotplaceDaoImpl.java 및 HotplaceServiceImpl.java 구현
+
+[ ] HotplaceServlet.java 구현
+
+[ ] 파일 업로드 처리 로직 구현 (enctype="multipart/form-data" 요청 처리)
+
+5. 여행 계획
+[ ] domain 패키지에 TripPlan.java, TripCourse.java 클래스 생성
+
+[ ] schema.sql에 trip_plan, trip_course 테이블 DDL 추가 (외래 키 포함)
+
+[ ] dao, service 패키지에 PlanDao, PlanService 인터페이스 및 impl 구현 클래스 생성
+
+[ ] PlanDaoImpl: 여행 계획 및 코스에 대한 CRUD 로직 구현
+
+[ ] PlanServiceImpl: 여행 계획 생성, 조회, 수정, 삭제 비즈니스 로직 구현
+
+[ ] PlanServlet: list, detail, create, update, delete 등의 action 요청 처리
+
+6.공지사항 (F09)
+[ ] schema.sql에 notice 테이블 DDL 추가
+
+[ ] dao, service 패키지에 NoticeDao, NoticeService 인터페이스 및 impl 구현 클래스 생성
+
+[ ] NoticeDaoImpl: 공지사항 CRUD 로직 구현
+
+[ ] NoticeServiceImpl: 공지사항 비즈니스 로직 구현
+
+[ ] NoticeServlet: list, detail 요청 처리 (쓰기/수정/삭제는 관리자 권한 체크 로직 필요)
+
+7. 관광지 뉴스 크롤링 (F06)
+[ ] pom.xml에 Jsoup 라이브러리 의존성 추가
+
+[ ] domain 패키지에 News.java 클래스 생성 (기사 제목, 링크, 요약 등을 담을)
+
+[ ] schema.sql에 news 테이블 DDL 추가
+
+[ ] dao 패키지에 NewsDao 인터페이스 및 impl 구현 클래스 생성
+
+[ ] service 패키지에 CrawlingService 클래스 생성 (크롤링 로직을 담을 곳)
+
+[ ] CrawlingService 내부에 특정 키워드로 뉴스 검색 결과를 크롤링하는 로직 구현
+
+[ ] 크롤링한 데이터를 NewsDao를 통해 DB에 저장하는 로직 구현
+
+# CrawlingService 예시
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+public class CrawlingService {
+
+    private final NewsDao newsDao = NewsDaoImpl.getInstance(); // DAO 주입
+
+    public void getNewsData(String keyword) {
+        try {
+            // 1. 검색어를 URL 인코딩
+            String encodedKeyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
+            String url = "https://search.naver.com/search.naver?where=news&query=" + encodedKeyword;
+
+            // 2. Jsoup으로 URL에 접속해서 HTML 문서를 통째로 가져옴
+            Document doc = Jsoup.connect(url).get();
+
+            // 3. 분석한 CSS 선택자를 사용해 원하는 부분(뉴스 목록)만 선택
+            Elements newsItems = doc.select("ul.list_news > li");
+
+            // 4. 목록의 각 아이템을 순회하면서 데이터 추출
+            for (Element item : newsItems) {
+                String title = item.selectFirst("a.news_tit").text();
+                String link = item.selectFirst("a.news_tit").attr("href");
+                String summary = item.selectFirst("div.news_dsc").text();
+
+                // 5. 추출한 데이터로 News 객체 생성 후 DB에 저장
+                News news = new News(title, link, summary);
+                newsDao.createNews(news); // DAO를 통해 저장
+                
+                System.out.println("뉴스 저장 완료: " + title);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
