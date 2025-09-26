@@ -56,6 +56,7 @@ public class UserDaoImpl implements UserDao {
                 if (conn != null) conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+
             }
         }
 
