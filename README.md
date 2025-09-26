@@ -43,37 +43,129 @@ EnjoyTrip은 전국의 관광 정보를 기반으로 사용자가 직접 여행 
 ## 📂 프로젝트 구조
 
 ```bash
-C:.
-├─java
-│  └─ssafy
-│      └─ps
-│          └─enjoytrip_be
-│              ├─controller       # 서블릿 컨트롤러
-│              ├─dao              # DAO 인터페이스
-│              │  └─impl          # DAO 구현체
-│              ├─domain           # 엔티티 클래스
-│              ├─dto              # DTO 클래스
-│              ├─service          # 서비스 인터페이스
-│              │  └─impl          # 서비스 구현체
-│              └─util             # DB 연결 유틸
+ssafy.ps.enjoytrip_be
+├─controller
+│  │  MainServlet.java
+│  │  UserServlet.java
+│  │  BoardServlet.java
+│  │  NoticeServlet.java
+│  │  AttractionServlet.java
+│  │  PlanServlet.java
+│  └─ HotplaceServlet.java
 │
-├─resources
-│      schema.sql                 # DB 초기 스키마
+├─dao
+│  │  UserDao.java
+│  │  BoardDao.java
+│  │  NoticeDao.java
+│  │  AttractionDao.java
+│  │  PlanDao.java
+│  │  HotplaceDao.java
+│  └─ NewsDao.java
+│  └─impl
+│      │  UserDaoImpl.java
+│      │  BoardDaoImpl.java
+│      │  NoticeDaoImpl.java
+│      │  AttractionDaoImpl.java
+│      │  PlanDaoImpl.java
+│      │  HotplaceDaoImpl.java
+│      └─ NewsDaoImpl.java
 │
-└─webapp
-    │  index.jsp                  # 메인 페이지
-    │
-    └─WEB-INF
-        │  web.xml                # 서블릿 매핑
-        │
-        └─views
-            ├─attraction          # 관광지 관련 뷰
-            ├─board               # 게시판 뷰
-            ├─common              # header/footer/nav
-            ├─hotplace            # HotPlace 뷰
-            ├─notice              # 공지사항 뷰
-            ├─plan                # 여행 계획 뷰
-            └─user                # 사용자 뷰 (로그인/회원가입 등)
+├─domain
+│  │  User.java
+│  │  Board.java
+│  │  Notice.java
+│  │  Attraction.java
+│  │  Hotplace.java
+│  │  News.java
+│  │  TripPlan.java
+│  └─ TripCourse.java
+│
+├─dto
+│  │  UserDto.java
+│  └─ BoardDto.java
+│
+├─service
+│  │  UserService.java
+│  │  BoardService.java
+│  │  NoticeService.java
+│  │  AttractionService.java
+│  │  PlanService.java
+│  │  HotplaceService.java
+│  └─ CrawlingService.java
+│  └─impl
+│      │  UserServiceImpl.java
+│      │  BoardServiceImpl.java
+│      │  NoticeServiceImpl.java
+│      │  AttractionServiceImpl.java
+│      │  PlanServiceImpl.java
+│      │  HotplaceServiceImpl.java
+│      └─ CrawlingServiceImpl.java
+│
+└─util
+   │  DBUtil.java
+   └─ ApiUtil.java
+ssafy.ps.enjoytrip_be
+├─controller
+│  │  MainServlet.java
+│  │  UserServlet.java
+│  │  BoardServlet.java
+│  │  NoticeServlet.java
+│  │  AttractionServlet.java
+│  │  PlanServlet.java
+│  └─ HotplaceServlet.java
+│
+├─dao
+│  │  UserDao.java
+│  │  BoardDao.java
+│  │  NoticeDao.java
+│  │  AttractionDao.java
+│  │  PlanDao.java
+│  │  HotplaceDao.java
+│  └─ NewsDao.java
+│  └─impl
+│      │  UserDaoImpl.java
+│      │  BoardDaoImpl.java
+│      │  NoticeDaoImpl.java
+│      │  AttractionDaoImpl.java
+│      │  PlanDaoImpl.java
+│      │  HotplaceDaoImpl.java
+│      └─ NewsDaoImpl.java
+│
+├─domain
+│  │  User.java
+│  │  Board.java
+│  │  Notice.java
+│  │  Attraction.java
+│  │  Hotplace.java
+│  │  News.java
+│  │  TripPlan.java
+│  └─ TripCourse.java
+│
+├─dto
+│  │  UserDto.java
+│  └─ BoardDto.java
+│
+├─service
+│  │  UserService.java
+│  │  BoardService.java
+│  │  NoticeService.java
+│  │  AttractionService.java
+│  │  PlanService.java
+│  │  HotplaceService.java
+│  └─ CrawlingService.java
+│  └─impl
+│      │  UserServiceImpl.java
+│      │  BoardServiceImpl.java
+│      │  NoticeServiceImpl.java
+│      │  AttractionServiceImpl.java
+│      │  PlanServiceImpl.java
+│      │  HotplaceServiceImpl.java
+│      └─ CrawlingServiceImpl.java
+│
+└─util
+   │  DBUtil.java
+   └─ ApiUtil.java
+
 ```
 
 ---
