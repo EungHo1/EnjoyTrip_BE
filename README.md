@@ -104,67 +104,6 @@ ssafy.ps.enjoytrip_be
 └─util
    │  DBUtil.java
    └─ ApiUtil.java
-ssafy.ps.enjoytrip_be
-├─controller
-│  │  MainServlet.java
-│  │  UserServlet.java
-│  │  BoardServlet.java
-│  │  NoticeServlet.java
-│  │  AttractionServlet.java
-│  │  PlanServlet.java
-│  └─ HotplaceServlet.java
-│
-├─dao
-│  │  UserDao.java
-│  │  BoardDao.java
-│  │  NoticeDao.java
-│  │  AttractionDao.java
-│  │  PlanDao.java
-│  │  HotplaceDao.java
-│  └─ NewsDao.java
-│  └─impl
-│      │  UserDaoImpl.java
-│      │  BoardDaoImpl.java
-│      │  NoticeDaoImpl.java
-│      │  AttractionDaoImpl.java
-│      │  PlanDaoImpl.java
-│      │  HotplaceDaoImpl.java
-│      └─ NewsDaoImpl.java
-│
-├─domain
-│  │  User.java
-│  │  Board.java
-│  │  Notice.java
-│  │  Attraction.java
-│  │  Hotplace.java
-│  │  News.java
-│  │  TripPlan.java
-│  └─ TripCourse.java
-│
-├─dto
-│  │  UserDto.java
-│  └─ BoardDto.java
-│
-├─service
-│  │  UserService.java
-│  │  BoardService.java
-│  │  NoticeService.java
-│  │  AttractionService.java
-│  │  PlanService.java
-│  │  HotplaceService.java
-│  └─ CrawlingService.java
-│  └─impl
-│      │  UserServiceImpl.java
-│      │  BoardServiceImpl.java
-│      │  NoticeServiceImpl.java
-│      │  AttractionServiceImpl.java
-│      │  PlanServiceImpl.java
-│      │  HotplaceServiceImpl.java
-│      └─ CrawlingServiceImpl.java
-│
-└─util
-   │  DBUtil.java
-   └─ ApiUtil.java
 
 ```
 
