@@ -1,15 +1,12 @@
 package ssafy.ps.enjoytrip_be.util;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DBUtil {
-
-    private static final String DRIVER = "org.h2.Driver";
-    private static final String URL = "jdbc:h2:mem:enjoytripdb";
-    private static final String USER = "sa";
-    private static final String PASSWORD = "";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String URL = "jdbc:mysql://localhost:3306/enjoytripdb?serverTimezone=UTC";
+    private static final String USER = "SSAFY"; // 네가 MySQL에 생성한 계정 ID
+    private static final String PASSWORD = "SSAFY"; // 네가 설정한 비밀번호
 
     // 1. 자기 자신의 인스턴스를 static으로 가지고 있음
     private static DBUtil instance = new DBUtil();
@@ -23,7 +20,6 @@ public class DBUtil {
         }
     }
 
-    // 3. 외부에서 이 클래스의 인스턴스를 필요로 할 때 호출하는 메소드
     public static DBUtil getInstance() {
         return instance;
     }
@@ -31,5 +27,15 @@ public class DBUtil {
     // 4. 커넥션을 반환하는 메소드
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
+    public void close(ResultSet rs, PreparedStatement pstmt, Connection conn) {
+        try {
+            if (rs != null) rs.close();
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

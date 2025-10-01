@@ -11,7 +11,7 @@ import java.io.IOException;
 
 // "/" 주소로 오는 GET 요청을 이 서블릿이 처리하도록 매핑
 @WebServlet("/board")
-public class BoardServlet extends HttpServlet {
+public class BoardServlet extends HttpServlet implements ControllerHelper {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

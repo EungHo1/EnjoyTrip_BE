@@ -111,6 +111,28 @@ ssafy.ps.enjoytrip_be
 
 ## 🛠️ 실행 방법
 
+0. EnjoyTrip 로컬 개발 환경 설정 가이드
+
+0-1. 사전 요구사항
+- `MySQL` 서버가 로컬에 설치되어 있어야 합니다.
+
+0-2. 데이터베이스 및 계정 생성
+- 로컬 MySQL 서버에 접속하여 아래 쿼리를 실행하세요.
+- 이 작업은 프로젝트 최초 설정 시 **한 번만** 수행하면 됩니다.
+
+```sql
+-- 1. enjoytripdb 데이터베이스 생성 (이미 존재하면 건너뛰기)
+CREATE DATABASE IF NOT EXISTS enjoytripdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- 2. 프로젝트에서 사용할 사용자 계정 생성 및 권한 부여
+-- 'ssafy'@'localhost' 계정이 이미 존재하면 건너뛰어도 됩니다.
+CREATE USER 'SSAFY'@'localhost' IDENTIFIED BY 'SSAFY';
+GRANT ALL PRIVILEGES ON enjoytripdb.* TO 'SSAFY'@'localhost';
+FLUSH PRIVILEGES;
+```
+0-3. 애플리케이션 실행
+- 위 설정이 완료된 후, IntelliJ에서 Tomcat 서버를 실행하면 `ServletContextListener`가 자동으로 `enjoytripdb` 내부에 필요한 테이블을 생성합니다.
+
 1.  **프로젝트 클론**
     ```bash
     git clone [프로젝트 GitHub 주소]

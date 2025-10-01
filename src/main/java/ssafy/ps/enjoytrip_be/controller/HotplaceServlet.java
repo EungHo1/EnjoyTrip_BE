@@ -5,7 +5,7 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-public class HotplaceServlet extends HttpServlet {
+public class HotplaceServlet extends HttpServlet implements ControllerHelper {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

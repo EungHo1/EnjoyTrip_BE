@@ -1,10 +1,19 @@
 package ssafy.ps.enjoytrip_be.domain;
 
 public class User {
-    private String userId;
+    private long userNo; // 대리 키 (PK)
+    private String userId; // 로그인 ID (UNIQUE)
     private String userName;
     private String userPassword;
     private String joinDate;
+
+    public User(String userId, String userName, String userPassword, String joinDate) {
+        userNo = 0;
+        this.userId = userId;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.joinDate = joinDate;
+    }
 
     // 기본 생성자
     public User() {}
@@ -12,6 +21,14 @@ public class User {
     // Getters and Setters
     public String getUserId() {
         return userId;
+    }
+
+    public long getUserNo() {
+        return userNo;
+    }
+
+    public void setUserNo(long userNo) {
+        this.userNo = userNo;
     }
 
     public void setUserId(String userId) {

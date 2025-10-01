@@ -10,7 +10,7 @@ import java.io.IOException;
 
 // "/" 주소로 오는 GET 요청을 이 서블릿이 처리하도록 매핑
 @WebServlet("/")
-public class MainServlet extends HttpServlet {
+public class MainServlet extends HttpServlet implements ControllerHelper {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 요청을 index.jsp 파일로 전달(forward)
