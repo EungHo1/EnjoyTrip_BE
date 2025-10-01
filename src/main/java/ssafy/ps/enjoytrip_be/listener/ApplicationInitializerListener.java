@@ -1,56 +1,61 @@
 package ssafy.ps.enjoytrip_be.listener;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-import ssafy.ps.enjoytrip_be.util.DBUtil;
+import lombok.extern.slf4j.Slf4j;
+import ssafy.ps.enjoytrip_be.util.DBUtil; // 네 DBUtil 경로에 맞게 수정
 
-import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
 
-@WebListener // 이 어노테이션으로 서블릿 컨테이너가 리스너임을 인지함
+@WebListener
+@Slf4j
 public class ApplicationInitializerListener implements ServletContextListener {
 
     private final DBUtil dbUtil = DBUtil.getInstance();
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("웹 애플리케이션 시작! DB 초기화를 시작");
+        log.info("웹 애플리케이션 시작! 초기 데이터 확인/적재를 시작합니다.");
 
         try (Connection conn = dbUtil.getConnection(); Statement stmt = conn.createStatement()) {
-            // 1. src/main/resources 폴더에 있는 schema.sql 파일을 읽어옴
-            InputStream is = getClass().getClassLoader().getResourceAsStream("schema.sql");
-            if (is == null) {
-                System.err.println("schema.sql 파일을 찾을 수 없습니다!");
-                return;
+
+            // --- 1. 필수 User 데이터 확인 및 생성 ---
+            String checkUserSql = "SELECT COUNT(*) FROM user WHERE user_id = 'unknown'";
+            ResultSet rs = stmt.executeQuery(checkUserSql);
+            if (rs.next() && rs.getInt(1) == 0) {
+                stmt.executeUpdate("INSERT INTO `user` (user_id, user_name, user_password) VALUES ('unknown', '탈퇴한 사용자', '1234')");
+                stmt.executeUpdate("INSERT INTO `user` (user_id, user_name, user_password) VALUES ('admin', '관리자', '1234')");
+                stmt.executeUpdate("INSERT INTO `user` (user_id, user_name, user_password) VALUES ('ssafy', '김싸피', '1234')");
             }
-            String sql = new BufferedReader(new InputStreamReader(is))
-                    .lines().collect(Collectors.joining("\n"));
+            rs.close();
 
-            // 2. SQL 스크립트를 세미콜론(;)을 기준으로 각 문장으로 분리
-            String[] sqlStatements = sql.split(";");
-
-            // 3. 각 SQL 문장을 순서대로 실행
-            for (String statement : sqlStatements) {
-                if (!statement.trim().isEmpty()) {
-                    stmt.execute(statement);
-                }
+            // --- 2. 게시판 더미 데이터 확인 및 생성 ---
+            String checkBoardSql = "SELECT COUNT(*) FROM board";
+            rs = stmt.executeQuery(checkBoardSql);
+            if (rs.next() && rs.getInt(1) == 0) {
+                log.info("게시판 더미 데이터를 생성합니다.");
+                stmt.executeUpdate("INSERT INTO `board` (user_no, subject, content) VALUES (3, '첫 번째 글입니다.', '안녕하세요.')");
+                stmt.executeUpdate("INSERT INTO `board` (user_no, subject, content) VALUES (2, '공지사항입니다.', '규칙을 지켜주세요.')");
             }
-            System.out.println("DB 초기화 성공!");
+            rs.close();
 
-        } catch (SQLException e) {
-            System.err.println("DB 초기화 중 오류 발생!");
+
+        } catch (Exception e) {
+            log.info("초기 데이터 확인/적재 중 오류 발생!");
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        System.out.println("웹 애플리케이션 종료.");
-    }
 }

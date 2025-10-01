@@ -21,14 +21,16 @@
             <input type="text" id="userId" name="userId" value="${userInfo.userId}" readonly>
 
             <label for="userName">이름</label>
-            <input type="text" id="userName" name="userName" value="${userInfo.name}" required>
+            <input type="text" id="userName" name="userName" value="${userInfo.userName}" required>
 
             <label for="userPassword">새 비밀번호</label>
             <input type="password" id="userPassword" name="userPassword" placeholder="변경할 경우에만 입력">
 
             <button type="submit">정보 수정</button>
-            <a href="#" role="button" class="contrast">회원 탈퇴</a>
-        </form>
+        </form> <hr> <form action="${pageContext.request.contextPath}/user" method="post" onsubmit="return confirm('정말 탈퇴하시겠습니까?');">
+        <input type="hidden" name="action" value="delete">
+        <button type="submit" class="contrast" role="button">회원 탈퇴</button>
+    </form>
     </c:if>
 </article>
 

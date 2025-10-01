@@ -7,10 +7,10 @@
         <li><strong><a href="${pageContext.request.contextPath}/">EnjoyTrip</a></strong></li>
     </ul>
     <ul>
-        <li><a href="#">지역별여행지</a></li>
-        <li><a href="#">나의여행계획</a></li>
-        <li><a href="#">핫플레이스</a></li>
-        <li><a href="#">공유게시판</a></li>
+        <li><a href=${root}/attraction?action=list">지역별여행지</a></li>
+        <li><a href=${root}/plan?action=list">나의여행계획</a></li>
+        <li><a href=${root}/plan?hotplace=list">핫플레이스</a></li>
+        <li><a href=${root}/board?action=list">게시판</a></li>
 
         <c:if test="${empty userInfo}">
             <%-- 로그인 안 된 경우 --%>
@@ -20,7 +20,7 @@
 
         <c:if test="${not empty userInfo}">
             <%-- 로그인 된 경우 --%>
-            <li><a href="#">${userInfo.userName}님</a></li>
+            <li><a href="${root}/user?action=mypage&userNo=${userInfo.userNo}">${userInfo.userName}님</a></li>
             <li><a href="${root}/user?action=logout&userNo=${userInfo.userNo}" role="button" class="secondary">로그아웃</a></li>
         </c:if>
     </ul>

@@ -11,7 +11,6 @@
         <p>원하는 지역과 콘텐츠를 선택하여 여행지를 찾아보세요.</p>
     </header>
 
-    <%-- 검색 폼: 이 폼을 통해 서블릿으로 검색 조건을 보냄 --%>
     <form action="${pageContext.request.contextPath}/attraction" method="get">
         <input type="hidden" name="action" value="list">
         <div class="grid">
@@ -33,7 +32,6 @@
 
     <hr>
 
-    <%-- 검색 결과 표시 --%>
     <div class="grid">
         <%-- 지도 표시 영역 --%>
         <aside>

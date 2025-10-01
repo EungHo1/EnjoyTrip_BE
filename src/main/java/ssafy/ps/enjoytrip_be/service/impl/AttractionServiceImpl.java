@@ -1,4 +1,7 @@
 package ssafy.ps.enjoytrip_be.service.impl;
 
-public class AttractionServiceImpl {
+import ssafy.ps.enjoytrip_be.service.AttractionService;
+
+public class AttractionServiceImpl implements AttractionService {
+
 }
