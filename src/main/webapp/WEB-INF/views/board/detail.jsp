@@ -6,7 +6,7 @@
 <article>
     <header>
         <h2>${article.subject}</h2>
-        <p>작성자: ${article.userName} | 조회수: ${article.hit} | 작성일: ${article.registerTime}</p>
+        <p>작성자: ${article.userId} | 조회수: ${article.hit} | 작성일: ${article.registerTime}</p>
     </header>
     <hr>
     <div>
@@ -16,9 +16,18 @@
     <footer>
         <a href="${pageContext.request.contextPath}/board?action=list" role="button" class="secondary">목록</a>
         <%-- 로그인한 사용자와 글 작성자가 같을 경우에만 수정/삭제 버튼 표시 --%>
-        <c:if test="${userInfo.userId eq article.userId}">
+        <c:if test="${loginUser.userId eq article.userId}">
             <a href="${pageContext.request.contextPath}/board?action=mvform&articleNo=${article.articleNo}" role="button">수정</a>
-            <a href="${pageContext.request.contextPath}/board?action=delete&articleNo=${article.articleNo}" role="button" class="contrast">삭제</a>
+
+            <!-- 삭제 버튼 (POST) -->
+
+
+            <form action="${pageContext.request.contextPath}/board" method="post" onsubmit="return confirm('삭제하시겠습니까?');">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="articleNo" value="${article.articleNo}">
+                <button type="submit" class="contrast" role="button">삭제</button>
+            </form>
+
         </c:if>
     </footer>
 </article>

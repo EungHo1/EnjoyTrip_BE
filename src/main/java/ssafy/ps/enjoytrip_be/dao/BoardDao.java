@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface BoardDao {
     void createArticle(Board board);
-    List<BoardDto> selectAllBoards();
-    BoardDto findById(int articleNo);
+    List<Board> selectAllBoards();
+    Board findById(int articleNo);
     void updateArticle(Board board);
     void deleteArticle(int articleNo);
     void updateHit(int articleNo);

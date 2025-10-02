@@ -23,7 +23,7 @@
             <tr>
                 <td>${article.articleNo}</td>
                 <td><a href="${pageContext.request.contextPath}/board?action=detail&articleNo=${article.articleNo}">${article.subject}</a></td>
-                <td>${article.userName}</td>
+                <td>${article.userId}</td>
                 <td>${article.hit}</td>
                 <td>${article.registerTime}</td>
             </tr>
