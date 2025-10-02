@@ -10,8 +10,8 @@ public class DBUtil {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     // URL의 데이터베이스 이름만 ssafy_trip으로 변경
     private static final String URL = "jdbc:mysql://localhost:3306/ssafy_trip?serverTimezone=UTC";
-    private static final String USER = "root";
-    private static final String PASSWORD = "12341234";
+    private static final String USER = "SSAFY";
+    private static final String PASSWORD = "SSAFY";
 
     // 1. 자기 자신의 인스턴스를 static으로 가지고 있음
     @Getter

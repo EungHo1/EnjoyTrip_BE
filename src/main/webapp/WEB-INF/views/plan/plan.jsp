@@ -46,6 +46,7 @@
                             <ul>
                                 <c:forEach items="${plan.attractions}" var="spot">
                                     <li>${spot.title}</li>
+                                    <li>${spot.firstImage1}</li>
                                 </c:forEach>
                             </ul>
                         </li>

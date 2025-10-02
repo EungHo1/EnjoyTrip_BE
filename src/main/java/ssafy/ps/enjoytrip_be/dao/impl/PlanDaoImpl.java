@@ -66,12 +66,12 @@ public class PlanDaoImpl implements PlanDao {
         Map<Integer, PlanDto> planMap = new LinkedHashMap<>();
 
         String sql = "SELECT p.plan_id, p.title AS plan_title, p.create_date, " +
-                "       a.content_id, a.title AS attraction_title, pa.`order` " +
+                "       a.content_id, a.title AS attraction_title, a.first_image1, pa.`order` " + // <-- a.first_image1 추가!
                 "FROM plan p " +
                 "JOIN plan_attraction pa ON p.plan_id = pa.plan_id " +
                 "JOIN attractions a ON pa.content_id = a.content_id " +
                 "WHERE p.user_no = ? " +
-                "ORDER BY p.plan_id, pa.`order`"; // plan_id와 순서로 정렬
+                "ORDER BY p.plan_id, pa.`order`";
 
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -100,6 +100,7 @@ public class PlanDaoImpl implements PlanDao {
                     AttractionInfoDto attraction = new AttractionInfoDto();
                     attraction.setContentId(rs.getInt("content_id"));
                     attraction.setTitle(rs.getString("attraction_title"));
+                    attraction.setFirstImage1(rs.getString("first_image1"));
                     planDto.getAttractions().add(attraction);
                 }
             }

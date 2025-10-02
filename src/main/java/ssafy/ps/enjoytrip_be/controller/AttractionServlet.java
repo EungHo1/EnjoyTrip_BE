@@ -6,11 +6,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import ssafy.ps.enjoytrip_be.dto.AttractionInfoDto;
-import ssafy.ps.enjoytrip_be.dto.ContentTypeDto;
-import ssafy.ps.enjoytrip_be.dto.GugunDto;
-import ssafy.ps.enjoytrip_be.dto.SidoDto;
+import ssafy.ps.enjoytrip_be.dto.*;
 import ssafy.ps.enjoytrip_be.service.AttractionService;
 import ssafy.ps.enjoytrip_be.service.impl.AttractionServiceImpl;
 
@@ -26,7 +24,7 @@ public class AttractionServlet extends HttpServlet implements ControllerHelper {
     private static final long serialVersionUID = 1L;
     AttractionService attractionService = AttractionServiceImpl.getInstance();
 
-        @Override
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = getActionParameter(request, response);
             switch (action) {
@@ -72,6 +70,16 @@ public class AttractionServlet extends HttpServlet implements ControllerHelper {
 
     private void listSidos(HttpServletRequest request, HttpServletResponse response) {
         try {
+            HttpSession session = request.getSession();
+            UserDto loginUser = (UserDto) session.getAttribute("userInfo");
+
+
+            if (loginUser == null) {
+                // 비정상적인 접근 처리
+                redirect(request, response, "/user?action=login-form");
+                return;
+            }
+
             List<SidoDto> sidos = attractionService.listSidos();
             List<ContentTypeDto> contentTypes = attractionService.listContentTypes();
             request.setAttribute("sidoList", sidos);

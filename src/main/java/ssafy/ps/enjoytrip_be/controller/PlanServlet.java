@@ -95,9 +95,9 @@ public class PlanServlet extends HttpServlet implements ControllerHelper {
 
     private void savePlan(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
-        UserDto loginUser = (UserDto) session.getAttribute("userInfo");
         List<AttractionInfoDto> cart = (List<AttractionInfoDto>) session.getAttribute("planCart");
         String planTitle = request.getParameter("planTitle");
+        UserDto loginUser = (UserDto) session.getAttribute("userInfo");
 
         if (loginUser == null || cart == null || cart.isEmpty()) {
             // 비정상적인 접근 처리

@@ -50,6 +50,15 @@ public class BoardServlet extends HttpServlet implements ControllerHelper {
 
     private void moveForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String articleNoParam = request.getParameter("articleNo");
+        HttpSession session = request.getSession();
+        UserDto loginUser = (UserDto) session.getAttribute("userInfo");
+
+        if (loginUser == null) {
+            // 비정상적인 접근 처리
+            redirect(request, response, "/user?action=login-form");
+            return;
+        }
+
         if(articleNoParam != null) { // 수정 폼일 때
             int articleNo = Integer.parseInt(articleNoParam);
             BoardDto article = boardService.getArticle(articleNo);
