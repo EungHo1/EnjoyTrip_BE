@@ -12,8 +12,7 @@ import java.util.Map;
 public interface AttractionDao {
     List<SidoDto> listSidos() throws SQLException;
     List<GugunDto> listGuguns(int sidoCode) throws SQLException;
-    // AttractionDao.java
     List<ContentTypeDto> listContentTypes() throws SQLException;
-    List<AttractionInfoDto> listAttractions(Map<String, String> params);
+    List<AttractionInfoDto> listAttractions(Map<String, String> params) throws SQLException;
 
 }

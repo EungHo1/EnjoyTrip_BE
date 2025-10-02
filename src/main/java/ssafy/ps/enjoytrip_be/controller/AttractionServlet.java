@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import ssafy.ps.enjoytrip_be.dto.AttractionInfoDto;
 import ssafy.ps.enjoytrip_be.dto.ContentTypeDto;
 import ssafy.ps.enjoytrip_be.dto.GugunDto;
 import ssafy.ps.enjoytrip_be.dto.SidoDto;
@@ -15,7 +16,9 @@ import ssafy.ps.enjoytrip_be.service.impl.AttractionServiceImpl;
 
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @WebServlet("/attraction")
@@ -23,12 +26,13 @@ public class AttractionServlet extends HttpServlet implements ControllerHelper {
     private static final long serialVersionUID = 1L;
     AttractionService attractionService = AttractionServiceImpl.getInstance();
 
-    @Override
+        @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = getActionParameter(request, response);
             switch (action) {
                 case "list" -> listSidos(request, response);
                 case "gugunList" -> listGuguns(request, response);
+                case "search" -> searchAttractions(request, response);
             }
 
 
@@ -36,6 +40,34 @@ public class AttractionServlet extends HttpServlet implements ControllerHelper {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    }
+
+    private void searchAttractions(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            // 1. 파라미터 꺼내기
+            String sidoCode = request.getParameter("sidoCode");
+            String gugunCode = request.getParameter("gugunCode");
+            String contentTypeId = request.getParameter("contentTypeId");
+
+            Map<String, String> params = new HashMap<>();
+            params.put("sidoCode", sidoCode);
+            params.put("gugunCode", gugunCode);
+            params.put("contentTypeId", contentTypeId);
+
+            // 2. 서비스 호출
+            List<AttractionInfoDto> list = attractionService.listAttractions(params);
+
+            // 3. JSON으로 응답
+            Gson gson = new Gson();
+            String json = gson.toJson(list);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 
     private void listSidos(HttpServletRequest request, HttpServletResponse response) {

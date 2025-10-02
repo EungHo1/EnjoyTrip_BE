@@ -3,12 +3,15 @@ package ssafy.ps.enjoytrip_be.service.impl;
 import lombok.Getter;
 import ssafy.ps.enjoytrip_be.dao.AttractionDao;
 import ssafy.ps.enjoytrip_be.dao.impl.AttractionDaoImpl;
+import ssafy.ps.enjoytrip_be.dto.AttractionInfoDto;
 import ssafy.ps.enjoytrip_be.dto.ContentTypeDto;
 import ssafy.ps.enjoytrip_be.dto.GugunDto;
 import ssafy.ps.enjoytrip_be.dto.SidoDto;
 import ssafy.ps.enjoytrip_be.service.AttractionService;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class AttractionServiceImpl implements AttractionService {
     @Getter
@@ -32,5 +35,10 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     public List<GugunDto> listGuguns(int sidoCode) throws Exception {
         return attractionDao.listGuguns(sidoCode);
+    }
+
+    @Override
+    public List<AttractionInfoDto> listAttractions(Map<String, String> params) throws SQLException {
+        return attractionDao.listAttractions(params);
     }
 }

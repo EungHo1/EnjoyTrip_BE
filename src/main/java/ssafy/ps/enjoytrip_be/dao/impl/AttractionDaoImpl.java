@@ -24,6 +24,62 @@ public class AttractionDaoImpl implements AttractionDao {
     }
 
     @Override
+    public List<AttractionInfoDto> listAttractions(Map<String, String> params) throws SQLException {
+        List<AttractionInfoDto> list = new ArrayList<>();
+
+        // 동적 쿼리를 만들기 위해 StringBuilder 사용
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT content_id, title, addr1, first_image1, latitude, longitude \n");
+        sql.append("FROM attractions \n");
+        sql.append("WHERE 1=1 \n"); // 어떤 조건이 들어올지 모르니 1=1로 시작하는 트릭
+
+        String sidoCode = params.get("sidoCode");
+        String gugunCode = params.get("gugunCode");
+        String contentTypeId = params.get("contentTypeId");
+
+        if (sidoCode != null && !sidoCode.isBlank() && !sidoCode.equals("0")) {
+            sql.append("AND area_code = ? \n");
+        }
+        if (gugunCode != null && !gugunCode.isBlank() && !gugunCode.equals("0")) {
+            sql.append("AND si_gun_gu_code = ? \n");
+        }
+        if (contentTypeId != null && !contentTypeId.isBlank() && !contentTypeId.equals("0")) {
+            sql.append("AND content_type_id = ? \n");
+        }
+
+
+        try (Connection conn = dbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+            int paramIndex = 1; // ?의 순서를 추적할 변수
+            if (sidoCode != null && !sidoCode.equals("0")) {
+                pstmt.setInt(paramIndex++, Integer.parseInt(sidoCode));
+            }
+            if (gugunCode != null && !gugunCode.equals("0")) {
+                pstmt.setInt(paramIndex++, Integer.parseInt(gugunCode));
+            }
+            if (contentTypeId != null && !contentTypeId.equals("0")) {
+                pstmt.setInt(paramIndex++, Integer.parseInt(contentTypeId));
+            }
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    AttractionInfoDto dto = new AttractionInfoDto();
+                    dto.setContentId(rs.getInt("content_id"));
+                    dto.setTitle(rs.getString("title"));
+                    dto.setAddr1(rs.getString("addr1"));
+                    dto.setFirstImage1(rs.getString("first_image1"));
+                    dto.setLatitude(rs.getDouble("latitude"));
+                    dto.setLongitude(rs.getDouble("longitude"));
+                    list.add(dto);
+                }
+            }
+        }
+        return list;
+    }
+
+
+    @Override
     public List<SidoDto> listSidos() throws SQLException {
         List<SidoDto> list = new ArrayList<>();
         String sql = "SELECT sido_code, sido_name FROM sidos ORDER BY sido_code";
@@ -59,7 +115,7 @@ public class AttractionDaoImpl implements AttractionDao {
                     GugunDto gugun = new GugunDto();
                     gugun.setGugunCode(rs.getInt("gugun_code"));
                     gugun.setGugunName(rs.getString("gugun_name"));
-                    gugun.setSidoCode(sidoCode); // sidoCode는 이미 알고 있으니 그냥 넣어줌
+                    gugun.setSidoCode(sidoCode);
                     list.add(gugun);
                 }
             }
@@ -82,10 +138,4 @@ public class AttractionDaoImpl implements AttractionDao {
         }
         return list;
     }
-
-    @Override
-    public List<AttractionInfoDto> listAttractions(Map<String, String> params) {
-        return List.of();
-    }
-
 }

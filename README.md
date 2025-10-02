@@ -125,6 +125,8 @@ ssafy.ps.enjoytrip_be
 
 초기 데이터 적재: 이어서 src/main/resources/data.sql 파일을 실행하여 관광지 정보 등의 기본 데이터를 테이블에 채워 넣습니다. (최초 1회)
 
+mysql -u SSAFY -p ssafy_trip < data.sql
+
 0-4. 애플리케이션 실행
 위 설정이 모두 완료된 후, IntelliJ에서 Tomcat 서버를 실행하세요. Listener는 unknown 유저 같은 최소한의 필수 데이터만 확인하고 생성합니다.
 
