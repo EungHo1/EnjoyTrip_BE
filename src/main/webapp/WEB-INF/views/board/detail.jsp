@@ -6,7 +6,7 @@
 <article>
     <header>
         <h2>${article.subject}</h2>
-        <p>작성자: ${article.userName} | 조회수: ${article.hit} | 작성일: ${article.registerTime}</p>
+        <p>작성자: ${article.userId} | 조회수: ${article.hit} | 작성일: ${article.registerTime}</p>
     </header>
     <hr>
     <div>
