@@ -11,7 +11,7 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     >
-    <%-- 2. 우리만의 커스텀 CSS (Pico를 덮어쓰거나 추가할 스타일) --%>
+    <%-- 2. 커스텀 CSS (Pico를 덮어쓰거나 추가할 스타일) --%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
 </head>
 <body>

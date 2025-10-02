@@ -16,15 +16,18 @@
         <div class="grid">
             <select name="sidoCode" id="sidoCode">
                 <option value="0" selected>시/도 선택</option>
-                <%-- TODO: 서블릿에서 시/도 목록(sidoList)을 받아와 <c:forEach>로 채워야 함 --%>
+                <c:forEach items="${sidoList}" var="sido">
+                    <option value="${sido.sidoCode}">${sido.sidoName}</option>
+                </c:forEach>
             </select>
             <select name="gugunCode" id="gugunCode">
                 <option value="0" selected>구/군 선택</option>
-                <%-- TODO: 시/도 선택 시 JS로 해당 구/군 목록을 비동기 로딩해야 함 --%>
             </select>
             <select name="contentTypeId" id="contentTypeId">
                 <option value="0" selected>콘텐츠 종류</option>
-                <%-- TODO: 관광(12), 문화(14), 축제(15), 숙박(32), 쇼핑(38), 음식(39) 등 --%>
+                <c:forEach items="${contentTypeList}" var="type">
+                    <option value="${type.contentTypeId}">${type.contentTypeName}</option>
+                </c:forEach>
             </select>
             <button type="submit">검색</button>
         </div>
@@ -76,4 +79,26 @@
     </div>
 </article>
 
+<script type="text/javascript">
+    // list.jsp의 <script> 태그 안
+    document.getElementById('sidoCode').addEventListener('change', function() {
+        let sidoCode = this.value;
+        if (sidoCode == "0") {
+            // '시/도 선택'으로 돌아가면 구/군 목록 초기화
+            document.getElementById('gugunCode').innerHTML = '<option value="0" selected>구/군 선택</option>';
+            return;
+        }
+
+        fetch('${pageContext.request.contextPath}/attraction?action=gugunList&sidoCode=' + sidoCode)
+            .then(response => response.json())
+            .then(data => {
+                let gugunSelect = document.getElementById('gugunCode');
+                gugunSelect.innerHTML = '<option value="0" selected>구/군 선택</option>'; // 기존 목록 지우기
+
+                data.forEach(gugun => {
+                    gugunSelect.innerHTML += `<option value="\${gugun.gugunCode}">\${gugun.gugunName}</option>`;
+                });
+            });
+    });
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

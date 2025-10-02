@@ -5,17 +5,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AttractionDto {
-    private int no;
+public class AttractionInfoDto {
     private int contentId;
-    private String title;
     private int contentTypeId;
-    private int areaCode; // sido_code
-    private int siGunGuCode; // gugun_code
-    private String firstImage1;
-    private double latitude;
-    private double longitude;
-    private String tel;
+    private String title;
     private String addr1;
     private String addr2;
+    private String firstImage1;
+    private int areaCode; // sido_code
+    private int sigunguCode; // gugun_code
+    private double latitude;
+    private double longitude;
 }

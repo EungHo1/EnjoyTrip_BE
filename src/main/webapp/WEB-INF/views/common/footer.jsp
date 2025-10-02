@@ -6,6 +6,6 @@
 </footer>
 
 <%-- 여기에 JavaScript 파일 링크 추가 가능 --%>
-<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+<%--<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>--%>
 </body>
 </html>
