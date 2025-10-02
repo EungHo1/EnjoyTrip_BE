@@ -17,4 +17,6 @@ public interface AttractionService {
     List<GugunDto> listGuguns(int sidoCode) throws Exception;
 
     List<AttractionInfoDto> listAttractions(Map<String, String> params) throws SQLException;
+
+    AttractionInfoDto getAttraction(int contentId) throws SQLException;
 }

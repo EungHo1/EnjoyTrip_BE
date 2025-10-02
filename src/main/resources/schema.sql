@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `ssafy_trip`.`contenttypes` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ssafy_trip`.`attractions` (
                                                           `no` int NOT NULL AUTO_INCREMENT  comment '명소코드',
-                                                          `content_id` int DEFAULT NULL comment '콘텐츠번호',
+                                                          `content_id` int DEFAULT NULL UNIQUE comment '콘텐츠번호',
                                                           `title` varchar(500) DEFAULT NULL comment '명소이름',
                                                           `content_type_id` int DEFAULT NULL comment '콘텐츠타입',
                                                           `area_code` int DEFAULT NULL comment '시도코드',
@@ -108,6 +108,27 @@ CREATE TABLE `board` (
                          PRIMARY KEY (`article_no`),
                          FOREIGN KEY (`user_no`) REFERENCES `user`(`user_no`)
 );
+
+-- 여행 계획 테이블
+CREATE TABLE `plan` (
+                        `plan_id` INT NOT NULL AUTO_INCREMENT,
+                        `user_no` BIGINT NOT NULL,
+                        `title` VARCHAR(100) NOT NULL,
+                        `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        PRIMARY KEY (`plan_id`),
+                        FOREIGN KEY (`user_no`) REFERENCES `user` (`user_no`)
+);
+
+-- 여행 계획에 포함된 관광지 목록 테이블
+CREATE TABLE `plan_attraction` (
+                                   `plan_id` INT NOT NULL,
+                                   `content_id` INT NOT NULL,
+                                   `order` INT NOT NULL COMMENT '경로 순서',
+                                   PRIMARY KEY (`plan_id`, `content_id`),
+                                   FOREIGN KEY (`plan_id`) REFERENCES `plan` (`plan_id`) ON DELETE CASCADE,
+                                   FOREIGN KEY (`content_id`) REFERENCES `attractions` (`content_id`)
+);
+
 
 -- -----------------------------------------------------
 -- 샘플 데이터

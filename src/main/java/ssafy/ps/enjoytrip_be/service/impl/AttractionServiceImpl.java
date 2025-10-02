@@ -41,4 +41,9 @@ public class AttractionServiceImpl implements AttractionService {
     public List<AttractionInfoDto> listAttractions(Map<String, String> params) throws SQLException {
         return attractionDao.listAttractions(params);
     }
+
+    @Override
+    public AttractionInfoDto getAttraction(int contentId) throws SQLException {
+        return attractionDao.getAttraction(contentId);
+    }
 }

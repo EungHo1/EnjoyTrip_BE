@@ -78,6 +78,38 @@ public class AttractionDaoImpl implements AttractionDao {
         return list;
     }
 
+    @Override
+    public AttractionInfoDto getAttraction(int contentId) throws SQLException {
+        AttractionInfoDto attractionInfo = null;
+        String sql = "SELECT content_id, title, addr1, first_image1, latitude, longitude, content_type_id, area_code, si_gun_gu_code " +
+                "FROM attractions " +
+                "WHERE content_id = ?";
+
+        try (Connection conn = dbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, contentId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // 결과가 있다면
+                if (rs.next()) {
+                    attractionInfo = new AttractionInfoDto();
+                    attractionInfo.setContentId(rs.getInt("content_id"));
+                    attractionInfo.setTitle(rs.getString("title"));
+                    attractionInfo.setAddr1(rs.getString("addr1"));
+                    attractionInfo.setFirstImage1(rs.getString("first_image1"));
+                    attractionInfo.setLatitude(rs.getDouble("latitude"));
+                    attractionInfo.setLongitude(rs.getDouble("longitude"));
+                    attractionInfo.setContentTypeId(rs.getInt("content_type_id"));
+                    attractionInfo.setAreaCode(rs.getInt("area_code"));
+                    attractionInfo.setSigunguCode(rs.getInt("si_gun_gu_code"));
+                }
+            }
+        }
+        // 결과가 없으면 null이 반환됨
+        return attractionInfo;
+    }
+
 
     @Override
     public List<SidoDto> listSidos() throws SQLException {

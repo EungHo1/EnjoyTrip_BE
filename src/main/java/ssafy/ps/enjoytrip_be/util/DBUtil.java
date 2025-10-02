@@ -49,4 +49,12 @@ public class DBUtil {
             log.error("자원 반납 실패!!" + e);
         }
     }
+
+    public void close(Connection conn) {
+        try {
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            log.error("자원 반납 실패!!" + e);
+        }
+    }
 }

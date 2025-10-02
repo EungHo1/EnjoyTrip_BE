@@ -46,34 +46,7 @@
         <%-- 관광지 목록 --%>
         <section id="attraction-list-section">
             <h5>검색 결과</h5>
-            <c:choose>
-                <c:when test="${not empty attractionList}">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>사진</th>
-                            <th>관광지명</th>
-                            <th>주소</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${attractionList}" var="attraction">
-                            <tr>
-                                <td>
-                                    <img src="${attraction.firstImage != '' ? attraction.firstImage : 'https://placehold.co/100x80?text=Image'}"
-                                         alt="관광지 이미지" style="width: 100px;">
-                                </td>
-                                <td>${attraction.title}</td>
-                                <td>${attraction.addr1}</td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </c:when>
-                <c:otherwise>
-                    <p>검색 결과가 없습니다. 조건을 선택하여 검색해주세요.</p>
-                </c:otherwise>
-            </c:choose>
+
         </section>
     </div>
 </article>
@@ -151,9 +124,9 @@
         });
 
         function displayMarkers(spots) {
-            console.log(`Title: ${spot.title}, Lat: ${spot.latitude}, Lng: ${spot.longitude}`);
             markers.forEach(marker => marker.setMap(null));
             markers = [];
+            console.log("spots object = ", spots);
 
             if (!spots || spots.length === 0) return;
 
@@ -173,7 +146,6 @@
             });
             if (map && typeof map.setBounds === 'function') map.setBounds(bounds);
         }
-
         // 검색 결과 목록을 테이블에 표시하는 함수
         function displayList(spots) {
             const listSection = document.querySelector("#attraction-list-section");
@@ -192,42 +164,51 @@
 
             const table = document.createElement("table");
 
-            // thead
+            // thead 수정: '계획 추가' 컬럼 추가
             const thead = document.createElement("thead");
             thead.innerHTML = `
         <tr>
             <th>사진</th>
             <th>관광지명</th>
             <th>주소</th>
+            <th>계획 추가</th>
         </tr>
     `;
             table.appendChild(thead);
 
             // tbody
             const tbody = document.createElement("tbody");
-
             spots.forEach(spot => {
                 const tr = document.createElement("tr");
 
-                // 이미지 셀
+                // --- 이미지, 제목, 주소 셀 (기존과 동일) ---
                 const tdImg = document.createElement("td");
                 const img = document.createElement("img");
-                img.src = spot.firstImage ? spot.firstImage : "https://placehold.co/100x80?text=Image";
+                img.src = spot.firstImage1 ? spot.firstImage1 : "https://placehold.co/100x80?text=Image";
                 img.alt = "관광지 이미지";
                 img.style.width = "100px";
                 tdImg.appendChild(img);
 
-                // 제목 셀
                 const tdTitle = document.createElement("td");
                 tdTitle.textContent = spot.title;
 
-                // 주소 셀
                 const tdAddr = document.createElement("td");
                 tdAddr.textContent = spot.addr1;
 
+                // --- '계획 추가' 버튼 셀 (새로 추가) ---
+                const tdPlan = document.createElement("td");
+                const addButton = document.createElement("a");
+                addButton.href = root + `/plan?action=add&contentId=` + spot.contentId; // PlanServlet으로 요청
+                addButton.textContent = "추가";
+                addButton.className = "secondary"; // 버튼 스타일
+                addButton.setAttribute("role", "button");
+                tdPlan.appendChild(addButton);
+
+                // --- 생성된 모든 셀을 행(tr)에 추가 ---
                 tr.appendChild(tdImg);
                 tr.appendChild(tdTitle);
                 tr.appendChild(tdAddr);
+                tr.appendChild(tdPlan); // 추가된 버튼 셀
 
                 tbody.appendChild(tr);
             });
@@ -236,6 +217,5 @@
             listSection.appendChild(table);
         }
     });
-
 </script>
 </body><jsp:include page="/WEB-INF/views/common/footer.jsp"/>
