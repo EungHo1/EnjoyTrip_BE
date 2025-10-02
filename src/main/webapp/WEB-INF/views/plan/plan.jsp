@@ -46,7 +46,10 @@
                             <ul>
                                 <c:forEach items="${plan.attractions}" var="spot">
                                     <li>${spot.title}</li>
-                                    <li>${spot.firstImage1}</li>
+                                    <li>
+                                        <img src="${spot.firstImage1 != '' ? spot.firstImage1 : 'https://placehold.co/50x40?text=Img'}" style="width: 50px;">
+                                            ${spot.title}
+                                    </li>
                                 </c:forEach>
                             </ul>
                         </li>
