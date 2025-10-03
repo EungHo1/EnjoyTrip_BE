@@ -22,7 +22,6 @@ import java.util.List;
 @WebServlet("/board")
 public class BoardServlet extends HttpServlet implements ControllerHelper {
     private  static final long serialVersionUID = 1L;
-    private final UserDao userDao =  UserDaoImpl.getInstance();
     private static final BoardService boardService = new BoardServiceImpl();
 
     @Override
@@ -52,6 +51,8 @@ public class BoardServlet extends HttpServlet implements ControllerHelper {
         String articleNoParam = request.getParameter("articleNo");
         HttpSession session = request.getSession();
         UserDto loginUser = (UserDto) session.getAttribute("userInfo");
+        String category = request.getParameter("category");
+        request.setAttribute("category", category);
 
         if (loginUser == null) {
             // 비정상적인 접근 처리
@@ -68,13 +69,21 @@ public class BoardServlet extends HttpServlet implements ControllerHelper {
     }
 
     private void getBoardList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<BoardDto> boardDtoList = boardService.listArticles();
+        String category = request.getParameter("category");
+        if (category == null || category.isEmpty()) {
+            category = "free"; // 기본값은 자유게시판
+        }
+
+        List<BoardDto> boardDtoList = boardService.listArticles(category);
         request.setAttribute("articleList", boardDtoList);
+        request.setAttribute("category", category);
         forward(request, response, "/WEB-INF/views/board/list.jsp");
     }
 
     private void getDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int articleId = Integer.parseInt(request.getParameter("articleNo"));
+        String category = request.getParameter("category");
+        request.setAttribute("category", category);
 
         // 1. 글 조회
         BoardDto article = boardService.getArticle(articleId);
@@ -94,6 +103,16 @@ public class BoardServlet extends HttpServlet implements ControllerHelper {
 
     private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); // 기존 세션만 가져옴
+        String category = request.getParameter("category");
+
+        if ("notice".equals(category)) {
+            UserDto loginUser = (UserDto) session.getAttribute("userInfo");
+            // 임시방편 (user_no가 2번인지 확인)
+            if (loginUser == null || loginUser.getUserNo() != 2) {
+                redirect(request, response, "/board?action=list&category=free");
+                return;
+            }
+        }
 
         // 1. 세션에서 사용자 정보 꺼내기
         String userId = null;
@@ -116,6 +135,7 @@ public class BoardServlet extends HttpServlet implements ControllerHelper {
         boardDto.setSubject(subject);
         boardDto.setContent(content);
         boardDto.setHit(hit);
+        boardDto.setCategory(category);
 
         try {
             boardService.writeArticle(boardDto);
@@ -134,13 +154,19 @@ public class BoardServlet extends HttpServlet implements ControllerHelper {
         String subject = request.getParameter("subject");
         String content = request.getParameter("content");
 
+        HttpSession session = request.getSession(false);
+        UserDto loginUser = null;
+        if (session != null) {
+            loginUser = (UserDto) session.getAttribute("userInfo");
+        }
+
         BoardDto boardDto = new BoardDto();
         boardDto.setArticleNo(articleNo);
         boardDto.setSubject(subject);
         boardDto.setContent(content);
 
         try {
-            boardService.modifyArticle(boardDto); // 로그인 사용자 ID 전달
+            boardService.modifyArticle(boardDto, loginUser); // 로그인 사용자 ID 전달
             redirect(request, response, "/board?action=detail&articleNo=" + articleNo);
         } catch (RuntimeException e) {
             log.error("게시판 글 수정 중 오류 발생", e);
@@ -152,7 +178,14 @@ public class BoardServlet extends HttpServlet implements ControllerHelper {
         int articleNo = Integer.parseInt(request.getParameter("articleNo"));
         log.info("삭제할 글 번호: {}", request.getParameter("articleNo"));
 
-        boardService.deleteArticle(articleNo);
+        HttpSession session = request.getSession(false);
+        UserDto loginUser = null;
+        if (session != null) {
+            loginUser = (UserDto) session.getAttribute("userInfo");
+        }
+
+
+        boardService.deleteArticle(articleNo, loginUser);
         redirect(request, response, "/board?action=list");
     }
 }

@@ -8,6 +8,7 @@ import ssafy.ps.enjoytrip_be.dao.impl.UserDaoImpl;
 import ssafy.ps.enjoytrip_be.domain.Board;
 import ssafy.ps.enjoytrip_be.domain.User;
 import ssafy.ps.enjoytrip_be.dto.BoardDto;
+import ssafy.ps.enjoytrip_be.dto.UserDto;
 import ssafy.ps.enjoytrip_be.service.BoardService;
 
 import java.util.ArrayList;
@@ -36,13 +37,14 @@ public class BoardServiceImpl implements BoardService {
         board.setSubject(boardDto.getSubject());
         board.setContent(boardDto.getContent());
         board.setHit(boardDto.getHit());
+        board.setCategory(boardDto.getCategory());
 
         boardDao.createArticle(board); // Dao로 전달
     }
 
     @Override
-    public List<BoardDto> listArticles() {
-        List<Board> boards = boardDao.selectAllBoards();
+    public List<BoardDto> listArticles(String category) {
+        List<Board> boards = boardDao.selectAllBoards(category);
 
         List<BoardDto> dtos = new ArrayList<>();
         for (Board board : boards) {
@@ -58,7 +60,7 @@ public class BoardServiceImpl implements BoardService {
         boardDao.updateHit(articleNo);
 
         // 2. 글 정보 조회
-        Board board = boardDao.findById(articleNo);
+        Board board = boardDao.findByArticleNo(articleNo);
         if (board == null) {
             return null; // 또는 예외 처리
         }
@@ -66,9 +68,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void modifyArticle(BoardDto boardDto) {
+    public void modifyArticle(BoardDto boardDto, UserDto loginUser) {
         // 글 정보 조회
-        Board board = boardDao.findById(boardDto.getArticleNo());
+        Board board = boardDao.findByArticleNo(boardDto.getArticleNo());
+        if (board.getUserNo() != loginUser.getUserNo()) {
+            throw new RuntimeException("수정 권한이 없습니다."); // 예외를 던져서 막아버린다.
+        }
 
         // 글 수정
         board.setSubject(boardDto.getSubject());
@@ -77,7 +82,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void deleteArticle(int articleNo) {
+    public void deleteArticle(int articleNo, UserDto loginUser) {
+        Board board = boardDao.findByArticleNo(articleNo);
+        if (board.getUserNo() != loginUser.getUserNo()) {
+            throw new RuntimeException("수정 권한이 없습니다."); // 예외를 던져서 막아버린다.
+        }
+
         boardDao.deleteArticle(articleNo);
     }
 

@@ -21,7 +21,6 @@
 
             <!-- 삭제 버튼 (POST) -->
 
-
             <form action="${pageContext.request.contextPath}/board" method="post" onsubmit="return confirm('삭제하시겠습니까?');">
                 <input type="hidden" name="action" value="delete">
                 <input type="hidden" name="articleNo" value="${article.articleNo}">

@@ -5,8 +5,20 @@
 <jsp:include page="/WEB-INF/views/common/nav.jsp"/>
 <article>
     <header>
-        <h2>여행 정보 공유</h2>
-        <a href="${pageContext.request.contextPath}/board?action=mvform" role="button">글쓰기</a>
+        <h2>${category == 'notice' ? '공지사항' : '자유게시판'}</h2>
+        <c:choose>
+            <c:when test="${category == 'notice'}">
+                <c:if test="${not empty sessionScope.userInfo && sessionScope.userInfo.userNo == 2}">
+                    <a href="${pageContext.request.contextPath}/board?action=mvform&category=notice" role="button">공지 작성</a>
+                </c:if>
+            </c:when>
+
+            <c:otherwise>
+                <c:if test="${not empty sessionScope.userInfo}">
+                    <a href="${pageContext.request.contextPath}/board?action=mvform&category=free" role="button">글쓰기</a>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
     </header>
     <table>
         <thead>

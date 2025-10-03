@@ -1,8 +1,0 @@
-USE ssafy_trip;
-
-SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE attractions;
-TRUNCATE TABLE guguns;
-TRUNCATE TABLE sidos;
-TRUNCATE TABLE contenttypes;
-SET FOREIGN_KEY_CHECKS = 1;

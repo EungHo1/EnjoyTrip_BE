@@ -11,6 +11,7 @@
 <article>
     <header><h2>${not empty article ? '글 수정' : '글쓰기'}</h2></header>
     <form action="${pageContext.request.contextPath}/board" method="post">
+        <input type="hidden" name="category" value="${category}">
         <input type="hidden" name="action" value="${article != null ? 'update' : 'create'}">
         <input type="hidden" name="articleNo" value="${article != null ? article.articleNo : ''}">
 

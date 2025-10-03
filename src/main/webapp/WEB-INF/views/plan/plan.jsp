@@ -45,7 +45,6 @@
                                 <%-- 2. 안쪽 forEach가 그 '계획'에 포함된 '관광지 목록'을 순회 --%>
                             <ul>
                                 <c:forEach items="${plan.attractions}" var="spot">
-                                    <li>${spot.title}</li>
                                     <li>
                                         <img src="${spot.firstImage1 != '' ? spot.firstImage1 : 'https://placehold.co/50x40?text=Img'}" style="width: 50px;">
                                             ${spot.title}

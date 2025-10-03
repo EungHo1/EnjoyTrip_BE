@@ -3,7 +3,6 @@ package ssafy.ps.enjoytrip_be.dao.impl;
 import lombok.Getter;
 import ssafy.ps.enjoytrip_be.dao.BoardDao;
 import ssafy.ps.enjoytrip_be.domain.Board;
-import ssafy.ps.enjoytrip_be.dto.BoardDto;
 import ssafy.ps.enjoytrip_be.util.DBUtil;
 
 import java.sql.*;
@@ -25,7 +24,7 @@ public class BoardDaoImpl implements BoardDao {
 
         try {
             conn = dbUtil.getConnection();
-            String sql = "INSERT INTO board (user_no, subject, content, hit) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO board (user_no, subject, content, hit, category) VALUES (?, ?, ?, ?, ?)";
 
             pstmt = conn.prepareStatement(sql);
 
@@ -33,6 +32,7 @@ public class BoardDaoImpl implements BoardDao {
             pstmt.setString(2, board.getSubject());
             pstmt.setString(3, board.getContent());
             pstmt.setInt(4, board.getHit());
+            pstmt.setString(5, board.getCategory());
 
             // 1. INSERT 실행
             pstmt.executeUpdate();
@@ -45,30 +45,32 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
-    public List<Board> selectAllBoards() {
+    public List<Board> selectAllBoards(String category) {
         List<Board> list = new ArrayList<>();
-
-        String sql = "SELECT article_no, user_no, subject, hit, register_time "
-                + "FROM board ORDER BY register_time DESC LIMIT ?, ?";
+        // board와 user 테이블을 JOIN해서, user_name까지 한번에 가져온다.
+        String sql = "SELECT b.article_no, b.user_no, u.user_name, b.subject, b.hit, b.register_time "
+                + "FROM board b JOIN user u ON b.user_no = u.user_no "
+                + "WHERE b.category = ? " // category 조건 추가!
+                + "ORDER BY b.register_time DESC LIMIT 0, 10";
 
         try (Connection conn = dbUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            // 페이지 별 조회 시 변경 필요
-            pstmt.setInt(1, 0);
-            pstmt.setInt(2, 10); // 한 페이지에 표시할 글 개수
+
+            pstmt.setString(1, category); // category 값 설정
+
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Board board = new Board();
                     board.setArticleNo(rs.getInt("article_no"));
-                    board.setUserNo(rs.getInt("user_no"));
+                    board.setUserNo(rs.getLong("user_no"));
+                    board.setUserName(rs.getString("user_name")); // JOIN으로 가져온 작성자 이름 추가!
                     board.setSubject(rs.getString("subject"));
                     board.setHit(rs.getInt("hit"));
                     board.setRegisterTime(rs.getTimestamp("register_time").toString());
                     list.add(board);
                 }
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -76,7 +78,7 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
-    public Board findById(int articleNo) {
+    public Board findByArticleNo(int articleNo) {
         String sql = "SELECT article_no, user_no, subject, content, hit, register_time "
                 + "FROM board WHERE article_no = ?";
 

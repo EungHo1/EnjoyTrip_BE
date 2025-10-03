@@ -99,15 +99,16 @@ CREATE TABLE `user` (
 -- Table `ssafy_trip`.`board`
 -- -----------------------------------------------------
 CREATE TABLE `board` (
-                         `article_no` BIGINT NOT NULL AUTO_INCREMENT,
-                         `user_no` BIGINT NOT NULL,
-                         `subject` VARCHAR(255) NOT NULL,
-                         `content` TEXT NOT NULL,
-                         `hit` INT NOT NULL DEFAULT 0,
-                         `register_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                         `article_no` BIGINT NOT NULL AUTO_INCREMENT COMMENT '게시글 고유 번호 (PK)',
+                         `user_no` BIGINT NOT NULL COMMENT '작성자 고유 번호 (FK)',
+                         `category` VARCHAR(20) NOT NULL DEFAULT 'free' COMMENT '게시글 분류 (free, notice)',
+                         `subject` VARCHAR(255) NOT NULL COMMENT '게시글 제목',
+                         `content` TEXT NOT NULL COMMENT '게시글 내용',
+                         `hit` INT NOT NULL DEFAULT 0 COMMENT '조회수',
+                         `register_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '작성일',
                          PRIMARY KEY (`article_no`),
                          FOREIGN KEY (`user_no`) REFERENCES `user`(`user_no`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='게시판 정보';
 
 -- 여행 계획 테이블
 CREATE TABLE `plan` (
@@ -129,18 +130,39 @@ CREATE TABLE `plan_attraction` (
                                    FOREIGN KEY (`content_id`) REFERENCES `attractions` (`content_id`)
 );
 
+CREATE TABLE `hotplace` (
+                            `hotplace_id` INT NOT NULL AUTO_INCREMENT,
+                            `user_no` BIGINT NOT NULL,
+                            `title` VARCHAR(100) NOT NULL,
+                            `description` TEXT NULL,
+                            `latitude` DECIMAL(20,17) NOT NULL,
+                            `longitude` DECIMAL(20,17) NOT NULL,
+                            `image_url` VARCHAR(255) NULL,
+                            `created_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                            PRIMARY KEY (`hotplace_id`),
+                            FOREIGN KEY (`user_no`) REFERENCES `user` (`user_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 
 -- -----------------------------------------------------
 -- 샘플 데이터
 -- -----------------------------------------------------
-INSERT INTO `user` (user_id, user_name, user_password) VALUES ('unknown', '탈퇴한 사용자', 'hashed_password'), ('ssafy', '김싸피', '1234'), ('admin', '관리자', 'admin');
-INSERT INTO `board` (user_no, subject, content) VALUES (2, '첫 번째 글입니다.', '안녕하세요.'), (3, '공지사항입니다.', '사이트 규칙을 잘 지켜주세요.');
+-- 샘플 데이터
+INSERT INTO `user` (user_id, user_name, user_password)
+VALUES ('unknown', '탈퇴한 사용자', '1234'),
+       ('admin', '관리자', '1234'),
+       ('ssafy', '김싸피', '1234');
+
+
+-- board 테이블 샘플 데이터 (category 지정)
+INSERT INTO `board` (user_no, category, subject, content)
+VALUES (2, 'free', '첫 번째 글입니다.', '안녕하세요. 만나서 반갑습니다.'),
+       (3, 'notice', '공지사항입니다.', '사이트 규칙을 잘 지켜주세요.');
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-GRANT ALL PRIVILEGES ON ssafy_trip.* TO 'SSAFY'@'localhost';
-FLUSH PRIVILEGES;
 
 COMMIT;
