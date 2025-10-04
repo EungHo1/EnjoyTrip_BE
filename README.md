@@ -3,18 +3,25 @@
 ### 나만의 여행 계획을 세우고 공유하는 **EnjoyTrip**
 
 EnjoyTrip은 전국의 관광 정보를 기반으로 사용자가 직접 여행 계획을 세우고, 다른 여행자들과 경험을 공유할 수 있는 커뮤니티형 웹 서비스입니다. 이 저장소는 **EnjoyTrip의 백엔드 시스템**을 위한 코드를 담고 있습니다.
+![image](./images/index.png)
 
 ---
 
 ## 💻 기술 스택
 
 - **Backend**: Java
-- **Database**: 
+- **Database**: MySQL
 - **Web Server**: Tomcat
 
 ---
 
 ## ✨ 주요 기능
+
+### 🔐 로그인 및 회원 관리
+- 회원가입, 로그인, 로그아웃 기능 제공
+- 로그인 성공 시에만 메뉴 및 주요 서비스 접근 가능
+![image](./images/join.png)
+![image](./images/login.png)
 
 ### 🗺️ 지역별 관광 정보 조회
 - 공공데이터 API 기반의 전국 관광지, 축제, 먹거리 정보 제공  
@@ -134,7 +141,7 @@ mysql -u SSAFY -p ssafy_trip < data.sql
 
 ## 🧑‍💻 개발 참여자
 
-| 이름 | 역할 |  GitHub  |
-| :---: | :---: |:--------:|
-| 정승호 |  | EuengHo1 |
-| 서민재 |  |  seomj   |
+| 이름   |  GitHub  |
+|:-----|:--------:|
+| 정승호  | EuengHo1 |
+| 서민재  |  seomj   |
