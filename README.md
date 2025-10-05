@@ -24,26 +24,27 @@ EnjoyTrip은 전국의 관광 정보를 기반으로 사용자가 직접 여행 
 ![image](./images/login.png)
 
 ### 🗺️ 지역별 관광 정보 조회
-- 공공데이터 API 기반의 전국 관광지, 축제, 먹거리 정보 제공  
-- **리스트 뷰 & 지도 뷰**로 손쉽게 탐색 가능  
+- 공공데이터 API 기반의 전국 관광지, 축제 정보 제공
+- **리스트 뷰 & 지도 뷰**로 손쉽게 탐색 가능
 - 지역 및 콘텐츠 유형별 필터링 지원  
-
+![image](./images/attraction.png)
 
 ### 📅 나만의 여행 계획
-- 원하는 여행지를 선택하고 일정에 추가  
-- 일자별 상세 일정, 예상 경비, 메모 기록 가능  
-- 효율적인 동선을 기반으로 여행 최적화  
-
+- 원하는 여행지를 선택하고 일정에 추가
+![image](./images/plan.png)
 
 ### 🔥 HotPlace 공유
-- 사용자 추천 장소 등록 가능  
-- 사진, 방문 후기, 위치, 장소 유형 기록  
+- 사용자 추천 장소 등록 가능
+- 사진, 위치, 후기 기록
 - 다른 여행자들이 공유한 HotPlace 확인 가능  
-
+![image](./images/regist_hotplace.png)
+![image](./images/hotplace.png)
 
 ### 🗣️ 커뮤니티 게시판
-- 여행 후기, 꿀팁, 질문과 답변을 자유롭게 공유  
-- 사용자 간 소통을 통해 여행 경험 확장  
+- 여행 후기, 꿀팁을 자유롭게 공유
+- 사용자 간 소통을 통해 여행 경험 확장\
+![image](./images/board_list.png)
+![image](./images/create.png)
 
 ---
 
@@ -118,24 +119,29 @@ ssafy.ps.enjoytrip_be
 
 ## 🛠️ 실행 방법
 
-0. EnjoyTrip 로컬 개발 환경 설정 가이드
+### 💻 로컬 개발 환경 설정 가이드
 
-0-1. 사전 요구사항
-- `MySQL` 서버가 로컬에 설치되어 있어야 합니다.
+#### 1️⃣ 사전 준비
+- 로컬 환경에 **MySQL 서버**가 설치되어 있어야 합니다.
 
-0-2. 데이터베이스 및 계정 생성
-- 로컬 MySQL 서버에 접속하여 schema.sql을 복사 붙여넣기 해서 모든 쿼리를 실행합니다.
+#### 2️⃣ 계정 설정
+- `src/main/java/ssafy/ps/enjoytrip_be/util/DBUtil.java` 파일을 열어 아래 항목을 로컬 환경에 맞게 수정하세요.
+```java
+private static final String USER = "SSAFY";
+private static final String PASSWORD = "SSAFY";
+```
+
+#### 3️⃣ 데이터베이스 초기화
+- 로컬 `MySQL` 서버에 접속하여 `src/main/resources/schema.sql` 파일을 실행하여 프로젝트에 필요한 모든 빈 테이블을 생성합니다.
+- `src/main/resources/data.sql` 파일을 실행하여 관광지 정보 등의 기본 데이터를 테이블에 채워 넣습니다.
 - 이 작업은 프로젝트 최초 설정 시 **한 번만** 수행하면 됩니다.
-
-0-3. 테이블 생성 및 데이터 적재
-테이블 생성: MySQL Workbench에서 src/main/resources/schema.sql 파일을 실행하여 프로젝트에 필요한 모든 빈 테이블을 생성합니다. (최초 1회)
-
-초기 데이터 적재: 이어서 src/main/resources/data.sql 파일을 실행하여 관광지 정보 등의 기본 데이터를 테이블에 채워 넣습니다. (최초 1회)
-
+```bash
 mysql -u SSAFY -p ssafy_trip < data.sql
+```
 
-0-4. 애플리케이션 실행
-위 설정이 모두 완료된 후, IntelliJ에서 Tomcat 서버를 실행하세요. Listener는 unknown 유저 같은 최소한의 필수 데이터만 확인하고 생성합니다.
+#### 4️⃣ 애플리케이션 실행
+- IntelliJ에서 **Tomcat 서버 설정**을 완료한 뒤, 애플리케이션을 실행합니다.
+- 서버 구동 시 Listener가 자동으로 `unknown` 사용자 등 **필수 기본 데이터**를 확인 및 생성합니다.
 
 ---
 
